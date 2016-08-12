@@ -110,7 +110,7 @@ class TreeNode extends React.Component {
     // todo disabled
     e.preventDefault()
     e.stopPropagation()
-    this.props.root.onDragOver(e, this)
+    this.props.root.onDragEnter(e, this)
     return false
   }
 
