@@ -1,0 +1,40 @@
+{
+  "presets": [
+    "react",
+    "es2015",
+    "stage-0"
+  ],
+
+  "plugins": [
+    "transform-runtime",
+    "add-module-exports",
+    "transform-react-display-name",
+    "transform-decorators-legacy",
+    [
+      "module-alias",
+      [
+        {
+          "src": "./",
+          "expose": "react-tree-component"
+        }
+      ]
+    ]
+  ],
+
+  "env": {
+    "development": {
+      "plugins": [
+        [
+          "transform-decorators-legacy",
+          "react-transform",
+          {
+            "transforms": [{
+                "transform": "react-transform-catch-errors",
+                "imports": ["react", "redbox-react"]
+              }
+            ]
+        }]
+      ]
+    }
+  }
+}
