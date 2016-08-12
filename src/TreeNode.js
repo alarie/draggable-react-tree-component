@@ -494,6 +494,7 @@ TreeNode.propTypes = {
   isLeaf: PropTypes.bool,
   root: PropTypes.object,
   onSelect: PropTypes.func,
+  items: PropTypes.node
 }
 
 TreeNode.defaultProps = {

@@ -1,5 +1,5 @@
+/* eslint no-underscore-dangle: "off" */
 import React, { PropTypes } from 'react'
-import assign from 'object-assign'
 import classNames from 'classnames'
 import {
   loopAllChildren, isInclude, getOffset,
@@ -7,8 +7,7 @@ import {
   getStrictlyValue, arraysEqual,
 } from './util'
 
-function noop() {
-}
+function noop() {}
 
 class Tree extends React.Component {
   constructor(props) {
@@ -40,7 +39,8 @@ class Tree extends React.Component {
     if (checkedKeys) {
       if (nextProps.checkedKeys === this.props.checkedKeys) {
         this.checkedKeysChange = false
-      } else {
+      }
+      else {
         this.checkedKeysChange = true
       }
       st.checkedKeys = checkedKeys
@@ -76,7 +76,7 @@ class Tree extends React.Component {
     const offsetHeight = treeNode.selectHandle.offsetHeight
     const pageY = e.pageY
     const gapHeight = 2
-    if (pageY > offsetTop + offsetHeight - gapHeight) {
+    if (pageY > (offsetTop + offsetHeight) - gapHeight) {
       this.dropPosition = 1
       return 1
     }
@@ -118,7 +118,7 @@ class Tree extends React.Component {
     this.props.onDragEnter({
       event: e,
       node: treeNode,
-      expandedKeys: expandedKeys && [...expandedKeys] || [...this.state.expandedKeys],
+      expandedKeys: (expandedKeys && [...expandedKeys]) || [...this.state.expandedKeys],
     })
 
   }
@@ -160,6 +160,7 @@ class Tree extends React.Component {
     }
     this.props.onDrop(res)
     this._dropTrigger = true
+    return true
   }
 
   onExpand(treeNode) {
@@ -169,7 +170,8 @@ class Tree extends React.Component {
     const index = expandedKeys.indexOf(treeNode.props.eventKey)
     if (expanded && index === -1) {
       expandedKeys.push(treeNode.props.eventKey)
-    } else if (!expanded && index > -1) {
+    }
+    else if (!expanded && index > -1) {
       expandedKeys.splice(index, 1)
     }
     if (!controlled) {
@@ -185,6 +187,8 @@ class Tree extends React.Component {
         }
       })
     }
+
+    return true
   }
 
   onCheck(treeNode) {
@@ -216,7 +220,8 @@ class Tree extends React.Component {
         }
       })
       this.props.onCheck(getStrictlyValue(checkedKeys, this.props.checkedKeys.halfChecked), newSt)
-    } else {
+    }
+    else {
       if (checked && index === -1) {
         this.treeNodesStates[treeNode.props.pos].checked = true
         const checkedPositions = []
@@ -257,7 +262,8 @@ class Tree extends React.Component {
     if (index !== -1) {
       selected = false
       selectedKeys.splice(index, 1)
-    } else {
+    }
+    else {
       selected = true
       if (!props.multiple) {
         selectedKeys.length = 0
@@ -337,10 +343,11 @@ class Tree extends React.Component {
     loopAllChildren(props.children, (item, index, pos, newKey) => {
       if (expandAll) {
         filterExpandedKeys.push(newKey)
-      } else if (props.autoExpandParent) {
+      }
+      else if (props.autoExpandParent) {
         expandedPositionArr.forEach(p => {
-          if ((p.split('-').length > pos.split('-').length
-            && isInclude(pos.split('-'), p.split('-')) || pos === p)
+          if (((p.split('-').length > pos.split('-').length &&
+            isInclude(pos.split('-'), p.split('-'))) || pos === p)
             && filterExpandedKeys.indexOf(newKey) === -1) {
             filterExpandedKeys.push(newKey)
           }
@@ -369,7 +376,8 @@ class Tree extends React.Component {
       if (props.checkStrictly) {
         if (props.checkedKeys.checked) {
           checkedKeys = props.checkedKeys.checked
-        } else if (!Array.isArray(props.checkedKeys)) {
+        }
+        else if (!Array.isArray(props.checkedKeys)) {
           checkedKeys = []
         }
       }
@@ -415,7 +423,7 @@ class Tree extends React.Component {
     const tPArr = treeNode.props.pos.split('-')
     loopAllChildren(this.props.children, (item, index, pos, newKey) => {
       const pArr = pos.split('-')
-      if (treeNode.props.pos === pos || tPArr.length < pArr.length && isInclude(tPArr, pArr)) {
+      if (treeNode.props.pos === pos || (tPArr.length < pArr.length && isInclude(tPArr, pArr))) {
         dragNodesKeys.push(newKey)
       }
     })
@@ -435,6 +443,7 @@ class Tree extends React.Component {
     if (expand && expandedKeys.indexOf(key) === -1) {
       return expandedKeys.concat([key])
     }
+    return []
   }
 
   filterTreeNode(treeNode) {
@@ -453,6 +462,8 @@ class Tree extends React.Component {
 
     // prefer to child's own selectable property if passed
     let selectable = props.selectable
+
+    // eslint-disable-next-line no-prototype-builtins
     if (child.props.hasOwnProperty('selectable')) {
       selectable = child.props.selectable
     }
@@ -489,10 +500,12 @@ class Tree extends React.Component {
         }
         if (props.checkedKeys.halfChecked) {
           cloneProps.halfChecked = props.checkedKeys.halfChecked.indexOf(key) !== -1 || false
-        } else {
+        }
+        else {
           cloneProps.halfChecked = false
         }
-      } else {
+      }
+      else {
         if (this.checkedKeys) {
           cloneProps.checked = this.checkedKeys.indexOf(key) !== -1 || false
         }
@@ -500,7 +513,7 @@ class Tree extends React.Component {
       }
 
       if (this.treeNodesStates[pos]) {
-        assign(cloneProps, this.treeNodesStates[pos].siblingPosition)
+        Object.assign(cloneProps, this.treeNodesStates[pos].siblingPosition)
       }
     }
     return React.cloneElement(child, cloneProps)
@@ -525,18 +538,21 @@ class Tree extends React.Component {
             siblingPosition,
           }
         })
-      } else if (props._treeNodesStates) {
+      }
+      else if (props._treeNodesStates) {
         this.treeNodesStates = props._treeNodesStates.treeNodesStates
         this.halfCheckedKeys = props._treeNodesStates.halfCheckedKeys
         this.checkedKeys = props._treeNodesStates.checkedKeys
-      } else {
+      }
+      else {
         const checkedKeys = this.state.checkedKeys
         let checkKeys
         if (!props.loadData && this.checkKeys && this._checkedKeys &&
           arraysEqual(this._checkedKeys, checkedKeys)) {
           // if checkedKeys the same as _checkedKeys from onCheck, use _checkedKeys.
           checkKeys = this.checkKeys
-        } else {
+        }
+        else {
           const checkedPositions = []
           this.treeNodesStates = {}
           loopAllChildren(props.children, (item, index, pos, keyOrPos, siblingPosition) => {
@@ -561,11 +577,13 @@ class Tree extends React.Component {
       }
     }
 
+    /* eslint-disable */
     return (
       <ul {...domProps} unselectable ref="tree">
         {React.Children.map(props.children, this.renderTreeNode, this)}
       </ul>
     )
+    /* eslint-enable */
   }
 }
 

@@ -1,28 +1,28 @@
-const expect = require('expect.js');
-const React = require('react');
-const ReactDOM = require('react-dom');
-const TestUtils = require('react-addons-test-utils');
-const Simulate = TestUtils.Simulate;
-const Tree = require('../');
-const TreeNode = Tree.TreeNode;
+const expect = require('expect.js')
+const React = require('react')
+const ReactDOM = require('react-dom')
+const TestUtils = require('react-addons-test-utils')
+const Simulate = TestUtils.Simulate
+const Tree = require('../')
+const TreeNode = Tree.TreeNode
 // const $ = require('jquery');
 
 describe('draggable tree', () => {
-  let instance;
-  let div;
+  let instance
+  let div
   beforeEach(() => {
-    div = document.createElement('div');
-    document.body.appendChild(div);
-  });
+    div = document.createElement('div')
+    document.body.appendChild(div)
+  })
   afterEach(() => {
-    ReactDOM.unmountComponentAtNode(div);
-    document.body.removeChild(div);
-  });
+    ReactDOM.unmountComponentAtNode(div)
+    document.body.removeChild(div)
+  })
 
   it('should fire drag and drop event', () => {
     function cb(info) {
-      console.log(info);
-      expect(true).to.be(true);
+      console.log(info)
+      expect(true).to.be(true)
     }
     instance = ReactDOM.render(
       <Tree
@@ -36,16 +36,16 @@ describe('draggable tree', () => {
           <TreeNode title="leaf 2" key="0-0-1" />
         </TreeNode>
       </Tree>, div
-    );
+    )
     try {
-      Simulate.dragStart(instance.refs['treeNode-0-0'].refs['treeNode-0-0-0'].refs.selectHandle);
-      const li = instance.refs['treeNode-0-0'].refs['treeNode-0-0-1'].refs.li;
-      Simulate.dragEnter(li);
-      Simulate.dragOver(li);
-      Simulate.dragLeave(li);
-      Simulate.drop(li);
+      Simulate.dragStart(instance.refs['treeNode-0-0'].refs['treeNode-0-0-0'].refs.selectHandle)
+      const li = instance.refs['treeNode-0-0'].refs['treeNode-0-0-1'].refs.li
+      Simulate.dragEnter(li)
+      Simulate.dragOver(li)
+      Simulate.dragLeave(li)
+      Simulate.drop(li)
     } catch (e) {
       // error
     }
-  });
-});
+  })
+})

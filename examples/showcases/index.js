@@ -5,7 +5,7 @@ function requireAll(req) {
   .filter((key) => key.indexOf('./sample-') === 0)
   .forEach((key) => {
     const name = key.replace('./sample-', '').replace('.js', '')
-    console.log(name);
+    console.log(name)
     examples[name] = req(key)
   })
 }

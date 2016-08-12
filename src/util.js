@@ -1,4 +1,4 @@
-/* eslint no-loop-func: 0*/
+/* eslint no-loop-func: 0, no-underscore-dangle: off */
 
 import React from 'react'
 
@@ -87,7 +87,8 @@ function getSiblingPosition(index, len, siblingPosition) {
   if (len === 1) {
     siblingPosition.first = true
     siblingPosition.last = true
-  } else {
+  }
+  else {
     siblingPosition.first = index === 0
     siblingPosition.last = index === len - 1
   }
@@ -186,12 +187,10 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
       objKeys[index] = null
     }
   })
-  // TODO: 循环 2470000 次耗时约 1400 ms。 性能瓶颈！
   // console.log(Date.now()-s, checkedPositionArr.length * objKeys.length);
   objKeys = objKeys.filter(i => i) // filter non null;
 
   for (let pIndex = 0; pIndex < checkedPositionArr.length; pIndex++) {
-    // 循环设置父节点的 选中 或 半选状态
     const loop = (__pos) => {
       const _posLen = splitPosition(__pos).length
       if (_posLen <= 2) { // e.g. '0-0', '0-1'
@@ -213,7 +212,8 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
                 pIndex--
               }
             }
-          } else if (obj[i].halfChecked) {
+          }
+          else if (obj[i].halfChecked) {
             siblingChecked += 0.5
           }
           // objKeys[index] = null;
@@ -221,15 +221,15 @@ export function handleCheckState(obj, checkedPositionArr, checkIt) {
       })
       // objKeys = objKeys.filter(i => i); // filter non null;
       const parent = obj[parentPosition]
-      // sibling 不会等于0
-      // 全不选 - 全选 - 半选
       if (siblingChecked === 0) {
         parent.checked = false
         parent.halfChecked = false
-      } else if (siblingChecked === sibling) {
+      }
+      else if (siblingChecked === sibling) {
         parent.checked = true
         parent.halfChecked = false
-      } else {
+      }
+      else {
         parent.halfChecked = true
         parent.checked = false
       }
@@ -251,7 +251,8 @@ export function getCheck(treeNodesStates) {
       checkedKeys.push(itemObj.key)
       checkedNodes.push(itemObj.node)
       checkedNodesPositions.push({ node: itemObj.node, pos: item })
-    } else if (itemObj.halfChecked) {
+    }
+    else if (itemObj.halfChecked) {
       halfCheckedKeys.push(itemObj.key)
     }
   })

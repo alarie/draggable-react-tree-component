@@ -1,8 +1,10 @@
-var Webpack = require('webpack')
-var path = require('path')
-var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var buildPath = path.resolve(__dirname, 'public', 'build');
-var mainPath = path.resolve(__dirname, 'examples', 'main.js');
+/* eslint import/no-extraneous-dependencies: off */
+const path = require('path')
+
+const Webpack = require('webpack')
+
+const buildPath = path.resolve(__dirname, 'public', 'build')
+const mainPath = path.resolve(__dirname, 'examples', 'main.js')
 
 module.exports = {
   entry: [

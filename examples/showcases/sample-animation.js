@@ -1,8 +1,9 @@
 import React from 'react'
+/* eslint-disable */
 import Tree, { TreeNode } from 'react-tree-component'
 import cssAnimation from 'css-animation'
-
 import 'react-tree-component/assets/index.less'
+/* eslint-enable */
 
 const STYLE = `
 .collapse {

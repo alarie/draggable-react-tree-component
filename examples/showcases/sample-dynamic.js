@@ -1,7 +1,8 @@
+import React, { Component } from 'react'
+/* eslint-disable */
 import 'react-tree-component/assets/index.less'
-import React from 'react'
-import ReactDOM from 'react-dom'
 import Tree, { TreeNode } from 'react-tree-component'
+/* eslint-enable */
 
 function generateTreeNodes(treeNode) {
   const arr = []
@@ -22,7 +23,8 @@ function setLeaf(treeData, curKey, level) {
       }
       if (item.children) {
         loopLeaf(item.children, l)
-      } else if (l < 1) {
+      }
+      else if (l < 1) {
         item.isLeaf = true
       }
     })
@@ -37,7 +39,8 @@ function getNewTreeData(treeData, curKey, child, level) {
       if (curKey.indexOf(item.key) === 0) {
         if (item.children) {
           loop(item.children)
-        } else {
+        }
+        else {
           item.children = child
         }
       }
@@ -47,14 +50,14 @@ function getNewTreeData(treeData, curKey, child, level) {
   setLeaf(treeData, curKey, level)
 }
 
-const Demo = React.createClass({
-  propTypes: {},
+class Demo extends Component {
+  static propTypes = {}
   getInitialState() {
     return {
       treeData: [],
       checkedKeys: [],
     }
-  },
+  }
   componentDidMount() {
     setTimeout(() => {
       this.setState({
@@ -66,16 +69,16 @@ const Demo = React.createClass({
         checkedKeys: ['0-0'],
       })
     }, 100)
-  },
+  }
   onSelect(info) {
     console.log('selected', info)
-  },
+  }
   onCheck(checkedKeys) {
     console.log(checkedKeys)
     this.setState({
       checkedKeys,
     })
-  },
+  }
   onLoadData(treeNode) {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -85,7 +88,7 @@ const Demo = React.createClass({
         resolve()
       }, 500)
     })
-  },
+  }
   render() {
     const loop = (data) =>
       data.map((item) =>
@@ -110,7 +113,7 @@ const Demo = React.createClass({
         </Tree>
       </div>
     )
-  },
-})
+  }
+}
 
 export { Demo as default }

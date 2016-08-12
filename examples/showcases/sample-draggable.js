@@ -1,27 +1,28 @@
-import React from 'react'
-import Tree, { TreeNode } from 'react-tree-component'
+import React, { Component } from 'react'
 import { gData } from './util'
-
+/* eslint-disable */
+import Tree, { TreeNode } from 'react-tree-component'
 import 'react-tree-component/assets/index.less'
+/* eslint-enable */
 import './draggable.less'
 
-const Demo = React.createClass({
+class Demo extends Component {
   getInitialState() {
     return {
       gData,
       autoExpandParent: true,
       expandedKeys: ['0-0-key', '0-0-0-key', '0-0-0-0-key'],
     }
-  },
+  }
   onDragStart(info) {
     console.log('start', info)
-  },
+  }
   onDragEnter(info) {
     // console.log('enter', info)
     this.setState({
       expandedKeys: info.expandedKeys,
     })
-  },
+  }
   onDrop(info) {
     console.log('drop', info)
     const dropKey = info.node.props.eventKey
@@ -35,6 +36,7 @@ const Demo = React.createClass({
         if (item.children) {
           return loop(item.children, key, callback)
         }
+        return null
       })
     }
     const data = [...this.state.gData]
@@ -51,7 +53,8 @@ const Demo = React.createClass({
         i = index
       })
       ar.splice(i, 0, dragObj)
-    } else {
+    }
+    else {
       loop(data, dropKey, (item) => {
         item.children = item.children || []
         // where to insert 示例添加到尾部，可以是随意位置
@@ -62,19 +65,18 @@ const Demo = React.createClass({
       gData: data,
       expandedKeys: info.rawExpandedKeys.concat([info.node.props.eventKey]),
     })
-  },
+  }
   onExpand(expandedKeys) {
-    console.log('onExpand', arguments)
     this.setState({
       expandedKeys,
       autoExpandParent: false,
     })
-  },
+  }
 
   render() {
-    const loop = data => {
-      return data.map((item) => {
-        return (<TreeNode
+    const loop = data => (
+      data.map((item) =>
+        (<TreeNode
           key={item.key}
           items={
             (item.children && item.children.length) ? loop(item.children) : null
@@ -84,8 +86,8 @@ const Demo = React.createClass({
             {item.title}
           </a>
         </TreeNode>)
-      })
-    }
+      )
+    )
     return (<div className="draggable-demo">
       <h2>draggable </h2>
       <p>drag a node into another node</p>
@@ -103,7 +105,7 @@ const Demo = React.createClass({
       </div>
     </div>)
   }
-})
+}
 
 
 export { Demo as default }
