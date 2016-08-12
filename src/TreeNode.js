@@ -22,9 +22,7 @@ class TreeNode extends React.Component {
       'onDragOver',
       'onDragLeave',
       'onDrop',
-    ].forEach((m) => {
-      this[m] = this[m].bind(this)
-    })
+    ].forEach((m) => (this[m] = this[m].bind(this)))
 
     this.state = {
       dataLoading: false,
@@ -112,7 +110,7 @@ class TreeNode extends React.Component {
     // todo disabled
     e.preventDefault()
     e.stopPropagation()
-    this.props.root.onDragEnter(e, this)
+    this.props.root.onDragOver(e, this)
     return false
   }
 

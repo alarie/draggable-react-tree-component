@@ -53,7 +53,14 @@ function getNewTreeData(treeData, curKey, child, level) {
 class Demo extends Component {
   static propTypes = {}
   constructor(props) {
-    super(props)
+    super(props);
+
+    [
+      'onSelect',
+      'onCheck',
+      'onLoadData',
+    ].forEach((name) => (this[name] = this[name].bind(this)))
+
     this.state = {
       treeData: [],
       checkedKeys: [],
@@ -104,7 +111,7 @@ class Demo extends Component {
     const treeNodes = loop(this.state.treeData)
     return (
       <div>
-        <h2>dynamic render</h2>
+        <h2>Load on demand (expand)</h2>
         <Tree
           onSelect={this.onSelect}
           checkable onCheck={this.onCheck} checkedKeys={this.state.checkedKeys}

@@ -160,7 +160,7 @@ class Tree extends React.Component {
     }
     this.props.onDrop(res)
     this._dropTrigger = true
-    return true
+    return undefined
   }
 
   onExpand(treeNode) {
@@ -188,7 +188,7 @@ class Tree extends React.Component {
       })
     }
 
-    return true
+    return undefined
   }
 
   onCheck(treeNode) {
@@ -443,7 +443,7 @@ class Tree extends React.Component {
     if (expand && expandedKeys.indexOf(key) === -1) {
       return expandedKeys.concat([key])
     }
-    return []
+    return null
   }
 
   filterTreeNode(treeNode) {

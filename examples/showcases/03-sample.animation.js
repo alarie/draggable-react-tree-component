@@ -87,7 +87,7 @@ const Demo = () => {
   }
 
   return (<div>
-    <h2>expanded</h2>
+    <h2>Animated</h2>
     <style dangerouslySetInnerHTML={{ __html: STYLE }} />
     <Tree
       defaultExpandAll={false}

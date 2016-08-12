@@ -25,9 +25,10 @@ const App = () => {
       </div>
     </div>
 
+    <h2 id="examples">Examples</h2>
+
     <hr />
 
-    <h2 id="examples">Examples</h2>
     {
     keys.map((key) => {
 

@@ -9,7 +9,7 @@ const mainPath = path.resolve(__dirname, 'examples', 'main.js')
 const plugins = []
 const entry = []
 
-if (process.env === 'production') {
+if (process.env.NODE_ENV !== 'production') {
   entry.push(
     // For hot style updates
     'webpack/hot/dev-server',

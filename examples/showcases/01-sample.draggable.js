@@ -8,7 +8,15 @@ import './draggable.less'
 
 class Demo extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+
+    [
+      'onDragStart',
+      'onDragEnter',
+      'onDrop',
+      'onExpand'
+    ].forEach((name) => (this[name] = this[name].bind(this)))
+
     this.state = {
       gData,
       autoExpandParent: true,
@@ -90,7 +98,7 @@ class Demo extends Component {
       )
     )
     return (<div className="draggable-demo">
-      <h2>draggable </h2>
+      <h2>Draggable </h2>
       <p>drag a node into another node</p>
       <div className="draggable-container">
         <Tree

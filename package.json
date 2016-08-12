@@ -30,7 +30,7 @@
     "start": "webpack-dev-server -c --port=8888",
     "dev": "webpack-dev-server --hot",
     "compile": "npm run clean && babel src --out-dir lib && less assets/index.less > lib/styles.css",
-    "build": "NODE_ENV='production' npm run compile && webpack -p && cp examples/index.html dist/index.html",
+    "build": "npm run compile && NODE_ENV=production webpack -p && cp examples/index.html dist/index.html",
     "deploy": "npm run build && gh-pages -d dist"
   },
   "betterScripts": {
