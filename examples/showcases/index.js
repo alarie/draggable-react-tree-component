@@ -1,15 +1,17 @@
-const examples = {}
 
-function requireAll(req) {
-  req.keys()
-  .filter((key) => key.indexOf('./sample-') === 0)
-  .forEach((key) => {
+function requireAll(req, loader = '') {
+
+  return req.keys()
+  .filter((key) => key.indexOf('./sample-') >= 0)
+  .reduce((memo, key) => {
     const name = key.replace('./sample-', '').replace('.js', '')
-    console.log(name)
-    examples[name] = req(key)
-  })
+    memo[name] = req(`${loader}${key}`)
+    return memo
+  }, {})
 }
 
-requireAll(require.context('./', true, /\.js$/))
 
-module.exports = examples
+const examples = requireAll(require.context('./', true, /\.js$/))
+const codes = requireAll(require.context('!!raw!./', true, /\.js$/), '')
+
+module.exports = { examples, codes }

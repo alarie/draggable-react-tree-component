@@ -1,45 +1,32 @@
 # react-tree-component
 ---
 
-tree component for react
+A (trying to be) lightweight tree component for react.
 
-<!-- [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
-[![gemnasium deps][gemnasium-image]][gemnasium-url]
-[![npm download][download-image]][download-url]
+**[See examples](http://alarie.github.io/react-tree-component/#examples)**
 
-[npm-image]: http://img.shields.io/npm/v/rc-tree.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-tree
-[travis-image]: https://img.shields.io/travis/react-component/tree.svg?style=flat-square
-[travis-url]: https://travis-ci.org/react-component/tree
-[coveralls-image]: https://img.shields.io/coveralls/react-component/tree.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/tree?branch=master
-[gemnasium-image]: http://img.shields.io/gemnasium/react-component/tree.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/react-component/tree
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
-[download-image]: https://img.shields.io/npm/dm/rc-tree.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-tree
- -->
-# FORK INFO
 
-This repository is a fork of https://github.com/react-component/tree.
+# Fork info
 
-**Changes/improvements:**
+This repository is a fork of [rc-tree]( https://github.com/react-component/tree).
 
-- Allows passing of nodes as elements for an entry
+**It changes several issues:**
 
-  ```js
-  // before
-  return data.map((item) => {
-    if (item.children && item.children.length) {
-      return <TreeNode key={item.key} title={item.title}>{loop(item.children)}</TreeNode>;
-    }
-    return <TreeNode key={item.key} title={item.title} />;
-  });
+- allows passing of tree-nodes as children of the `<TreeNode />` component
+- allows to use links as children
+- removes much of the css/images and leaves it to the user to provide the proper for the *expand* and *folder* icon
 
-  // after
+
+**Future plans**
+
+- remove the checkboxes from the view and provide them as plugin
+
+## Code Samples
+
+### Passing nodes
+
+  ```javascript
+
   return data.map((item) => {
 
     return <TreeNode
@@ -53,15 +40,14 @@ This repository is a fork of https://github.com/react-component/tree.
   })
   ```
 
-- Allows items to be links:
-  Before that was not possible because the TreeNode Element container was a
-  link itself. Thus you would have ended with a link inside of a link. Now this
-  is possible.
+### Using Links
+  In *rc-tree* this was not possible because the `<TreeNode />` Element container was a
+  link itself. Thus you would have ended with a link inside of a link. Now this is possible.
 
-  **NOTE for when you are using `draggable` with links:**
-  Links are draggable by default. So you would end up with dragging a rather
-  ugly link preview. To get around this you have to disable the draggability of links. Setting `draggable={false}` should do the trick. This way the tree plays nicely with libs like react-router:
-  ```js
+  > **NOTE for when you are using `draggable` with links:**
+  > Links are draggable by default. So you would end up with dragging a rather ugly link preview. To get around this you have to disable the draggability of links. Setting `draggable={false}` should do the trick. This way the tree plays nicely with libs like react-router:
+
+  ```javascript
   return data.map((item) => {
 
     return (<TreeNode
@@ -80,33 +66,11 @@ This repository is a fork of https://github.com/react-component/tree.
 
   })
   ```
-- Removes folder icons (Using items is now up to the user to be set in their node child component)
 
 
-## Screenshots
+<!-- ## install
 
-<img src="https://t.alipayobjects.com/images/T15BpfXn8nXXXXXXXX.png" width="288"/>
-
-
-## Feature
-
-* support ie8,ie8+,chrome,firefox,safari
-
-
-## Example
-
-http://localhost:8018/examples/
-
-online example: http://react-component.github.io/tree/examples/
-
-
-## install
-
-[![rc-tree](https://nodei.co/npm/rc-tree.png)](https://npmjs.org/package/rc-tree)
-
-## Usage
-
-see examples
+[![rc-tree](https://nodei.co/npm/react-tree-component.png)](https://npmjs.org/package/react-tree-component) -->
 
 ## API
 
@@ -146,9 +110,6 @@ see examples
 |onDrop | it execs when fire the tree's drop event | function({event, node, dragNode, dragNodesKeys}) | - |
 
 ### TreeNode props
-> note: if you have a lot of TreeNode, like more than 1000,
-> make the parent node is collapsed by default, will obvious effect, very fast.
-> Because the children hide TreeNode will not insert into dom.
 
 | name     | description    | type     | default      |
 |----------|----------------|----------|--------------|
@@ -161,7 +122,7 @@ see examples
 |href|the link url|string|''|
 |linkClassName|the css class for the link|string|''|
 
-## note
+## Note
 
 The number of treeNodes can be very large, but when enable `checkable`,
 it will spend more computing time, so we cached some calculations(e.g. `this.treeNodesStates`),
@@ -177,19 +138,5 @@ npm install
 npm start
 ```
 
-## Test Case
-
-http://localhost:8018/tests/runner.html?coverage
-
-## Coverage
-
-http://localhost:8018/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8018/tests/runner.html?coverage
-
 ## License
-rc-tree is released under the MIT license.
-
-## other tree view
-- [ztree](http://www.ztree.me/)
-- [jqTree](http://mbraak.github.io/jqTree/)
-- [jquery.treeselect](http://travistidwell.com/jquery.treeselect.js/)
-- [angular Select Tree](http://a5hik.github.io/angular-multi-select-tree/)
+react-tree-component is released under the MIT license.

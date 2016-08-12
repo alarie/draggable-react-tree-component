@@ -7,8 +7,9 @@ import 'react-tree-component/assets/index.less'
 import './draggable.less'
 
 class Demo extends Component {
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props)
+    this.state = {
       gData,
       autoExpandParent: true,
       expandedKeys: ['0-0-key', '0-0-0-key', '0-0-0-0-key'],

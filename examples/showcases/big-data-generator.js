@@ -9,20 +9,22 @@ class Gen extends Component {
     z: PropTypes.number,
   }
 
-  getDefaultProps() {
-    return {
-      onGen: () => {},
-      x: 20,
-      y: 18,
-      z: 1,
-    }
+  static defaultProps = {
+    onGen: () => {},
+    x: 20,
+    y: 18,
+    z: 1
   }
 
-  getInitialState() {
-    return {
+
+  constructor(props) {
+    super(props)
+    this.state = {
       nums: '',
     }
   }
+
+
   componentDidMount() {
     const vals = this.getVals()
     this.props.onGen(generateData(vals.x, vals.y, vals.z))

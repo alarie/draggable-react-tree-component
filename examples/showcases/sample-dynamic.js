@@ -52,8 +52,9 @@ function getNewTreeData(treeData, curKey, child, level) {
 
 class Demo extends Component {
   static propTypes = {}
-  getInitialState() {
-    return {
+  constructor(props) {
+    super(props)
+    this.state = {
       treeData: [],
       checkedKeys: [],
     }
