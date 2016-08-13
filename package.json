@@ -1,6 +1,6 @@
 {
   "name": "draggable-react-tree-component",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A (trying to be) lightweight tree component for react.",
   "keywords": [
     "draggable",
@@ -34,7 +34,8 @@
     "dev": "webpack-dev-server -c --hot",
     "compile": "npm run clean && babel src --out-dir lib && lessc assets/index.less > lib/styles.css",
     "build": "npm run compile && NODE_ENV=production webpack -p && cp examples/index.html dist/index.html",
-    "deploy": "npm run build && gh-pages -d dist"
+    "deploy": "npm run build && gh-pages -d dist",
+    "publish": "npm version patch && git push --tags && npm deploy && npm deploy"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
