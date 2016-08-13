@@ -1,4 +1,6 @@
+/* eslint-disable */
 import React, { PropTypes, Component } from 'react'
+/* eslint-enable */
 import { generateData, calcTotal } from './util'
 
 class Gen extends Component {

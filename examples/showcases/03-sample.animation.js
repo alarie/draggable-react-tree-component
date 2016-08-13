@@ -1,5 +1,5 @@
-import React from 'react'
 /* eslint-disable */
+import React from 'react'
 import Tree, { TreeNode } from 'react-tree-component'
 import cssAnimation from 'css-animation'
 import 'react-tree-component/assets/index.less'

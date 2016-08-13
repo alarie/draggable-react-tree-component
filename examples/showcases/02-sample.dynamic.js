@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 /* eslint-disable */
+import React, { Component } from 'react'
 import 'react-tree-component/assets/index.less'
 import Tree, { TreeNode } from 'react-tree-component'
 /* eslint-enable */

@@ -1,8 +1,11 @@
 {
   "name": "draggable-react-tree-component",
   "version": "1.0.0",
-  "description": "lightweight react tree component",
+  "description": "A (trying to be) lightweight tree component for react.",
   "keywords": [
+    "draggable",
+    "drag&drop",
+    "sortable",
     "react",
     "react-component",
     "react-tree",
@@ -32,42 +35,6 @@
     "compile": "npm run clean && babel src --out-dir lib && lessc assets/index.less > lib/styles.css",
     "build": "npm run compile && NODE_ENV=production webpack -p && cp examples/index.html dist/index.html",
     "deploy": "npm run build && gh-pages -d dist"
-  },
-  "betterScripts": {
-    "compile": {
-      "command": "babel-node bin/compile",
-      "env": {
-        "NODE_ENV": "production",
-        "DEBUG": "app:*"
-      }
-    },
-    "dev": {
-      "command": "nodemon --exec babel-node bin/server",
-      "env": {
-        "NODE_ENV": "development",
-        "DEBUG": "app:*"
-      }
-    },
-    "deploy": {
-      "command": "npm run clean && npm run compile",
-      "env": {
-        "NODE_ENV": "production",
-        "DEBUG": "app:*"
-      }
-    },
-    "start": {
-      "command": "babel-node bin/server",
-      "env": {
-        "DEBUG": "app:*"
-      }
-    },
-    "test": {
-      "command": "babel-node ./node_modules/karma/bin/karma start build/karma.conf",
-      "env": {
-        "NODE_ENV": "test",
-        "DEBUG": "app:*"
-      }
-    }
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
@@ -102,9 +69,7 @@
     "style-loader": "^0.13.1",
     "text-loader": "0.0.1",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
-  },
-  "dependencies": {
+    "webpack-dev-server": "^1.14.1",
     "classnames": "2.x",
     "rc-animate": "2.x",
     "react": "^15.3.0",

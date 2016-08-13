@@ -1,7 +1,7 @@
+/* eslint-disable */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import showcases from './showcases'
-/* eslint-disable */
 import 'milligram/dist/milligram.css'
 import readme from 'html!markdown!../README.md'
 /* eslint-enable */

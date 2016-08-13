@@ -1,6 +1,6 @@
+/* eslint-disable */
 import React, { Component } from 'react'
 import { gData } from './util'
-/* eslint-disable */
 import Tree, { TreeNode } from 'react-tree-component'
 import 'react-tree-component/assets/index.less'
 /* eslint-enable */

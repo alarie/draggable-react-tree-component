@@ -12,6 +12,7 @@
     "react/no-multi-comp": 0,
     "react/jsx-first-prop-new-line": 0,
     "react/jsx-filename-extension": 0,
+    "import/no-extraneous-dependencies": 0,
     "import/default": 0,
     "import/no-duplicates": 0,
     "import/named": 0,
@@ -24,7 +25,7 @@
     "no-alert": 0,
     "no-trailing-spaces": [2, { "skipBlankLines": true }],
     "padded-blocks": 0,// ["error", { "blocks": "always", "switches": "always", "classes": "always" }],
-    "no-param-reassign": 0
+    "no-param-reassign": 0,
 
   },
   "plugins": [
