@@ -448,7 +448,8 @@ class TreeNode extends React.Component {
     let newChildren = null
 
     // don't render the children if not expanded
-    if (props.expanded) {
+    // and openAnimation is not set
+    if (props.expanded || props.openAnimation) {
 
       newChildren = this.renderChildren(props)
       if (!newChildren || newChildren === props.items) {

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React from 'react'
-import Tree, { TreeNode } from 'react-tree-component'
+import Tree, { TreeNode } from '../../src/'
 import cssAnimation from 'css-animation'
-import 'react-tree-component/assets/index.less'
+import '../../assets/index.less'
 /* eslint-enable */
 
 const STYLE = `
@@ -82,7 +82,10 @@ const Demo = () => {
       return null
     }
     return nodes.map((node) =>
-      <TreeNode key={node.key} items={loop(node.children)}>{node.title}</TreeNode>
+      <TreeNode key={node.key}
+        openAnimation={animation}
+        items={loop(node.children)}
+      >{node.title}</TreeNode>
     )
   }
 

@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { gData } from './util'
 import Tree, { TreeNode } from '../../src'
-import 'react-tree-component/assets/index.less'
+import '../../assets/index.less'
 /* eslint-enable */
 import './draggable.less'
 
@@ -32,48 +32,63 @@ class Demo extends Component {
       expandedKeys: info.expandedKeys,
     })
   }
+
+
   onDrop(info) {
     console.log('drop', info)
+
     const dropKey = info.node.props.eventKey
     const dragKey = info.dragNode.props.eventKey
-    // const dragNodesKeys = info.dragNodesKeys;
-    const loop = (data, key, callback) => {
+
+
+    // traverse to the hiven key and execute the given callback
+    const traverseToKey = (data, key, callback) => {
       data.forEach((item, index, arr) => {
         if (item.key === key) {
           return callback(item, index, arr)
         }
         if (item.children) {
-          return loop(item.children, key, callback)
+          return traverseToKey(item.children, key, callback)
         }
         return null
       })
     }
+
     const data = [...this.state.gData]
     let dragObj
-    loop(data, dragKey, (item, index, arr) => {
+
+    traverseToKey(data, dragKey, (item, index, arr) => {
       arr.splice(index, 1)
       dragObj = item
     })
+
     if (info.dropToGap) {
-      let ar
-      let i
-      loop(data, dropKey, (item, index, arr) => {
-        ar = arr
-        i = index
+      traverseToKey(data, dropKey, (item) => {
+        item.children = item.children || []
+
+        let index = info.dropPosition +
+          (info.dropPositionOnNode > 0 ? 1 : 0)
+
+        if (info.isSameLevel && info.dragPosition < info.dropPosition) {
+          index -= 1
+        }
+        // where to insert
+        item.children.splice(index, 0, dragObj)
       })
-      ar.splice(i, 0, dragObj)
     }
     else {
-      loop(data, dropKey, (item) => {
+      traverseToKey(data, dropKey, (item) => {
         item.children = item.children || []
-        // where to insert 示例添加到尾部，可以是随意位置
+        // where to insert
         item.children.push(dragObj)
       })
     }
+
     this.setState({
       gData: data,
-      expandedKeys: info.rawExpandedKeys.concat([info.node.props.eventKey]),
+      expandedKeys: info.rawExpandedKeys.concat([dropKey]),
     })
+
   }
   onExpand(expandedKeys) {
     this.setState({

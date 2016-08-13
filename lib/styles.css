@@ -52,7 +52,7 @@
   display: none;
   content: '\0020';
   position: absolute;
-  left: 18px;
+  left: 0;
   right: 0;
   border-top: 2px #13284a solid;
   z-index: 1;

@@ -1,24 +1,34 @@
+/* eslint-disable */
 import 'react-tree-component/assets/index.less'
-import React, { PropTypes } from 'react'
+import React, { PropTypes, Component } from 'react'
 import ReactDOM from 'react-dom'
-import Tree, { TreeNode } from 'react-tree-component'
+import Tree, { TreeNode } from '../../src/'
 import { gData,
   /* filterParentPosition, getFilterExpandedKeys,*/ getRadioSelectKeys } from './util'
-import 'rc-dialog/assets/index.css'
-import Modal from 'rc-dialog'
+/* eslint-enable */
 
-const Demo = React.createClass({
-  propTypes: {
+class Demo extends Component {
+  static propTypes = {
     multiple: PropTypes.bool,
-  },
-  getDefaultProps() {
-    return {
-      visible: false,
-      multiple: true,
-    }
-  },
-  getInitialState() {
-    return {
+  }
+  static defaultProps = {
+    visible: false,
+    multiple: true,
+  }
+  constructor(props) {
+    super(props);
+
+    [
+      'onExpand',
+      'onCheck',
+      'onCheckStrictly',
+      'onSelect',
+      'onRbSelect',
+      'onClose',
+      'onTriggerChecked',
+      'onOk'
+    ].forEach((key) => (this[key] = this[key].bind(this)))
+    this.state = {
       // expandedKeys: getFilterExpandedKeys(gData, ['0-0-0-key']),
       expandedKeys: ['0-0-0-key'],
       autoExpandParent: true,
@@ -28,7 +38,7 @@ const Demo = React.createClass({
       selectedKeys: [],
       treeData: [],
     }
-  },
+  }
   onExpand(expandedKeys) {
     // if not set autoExpandParent to false, if children expanded, parent can not collapse.
     // or, you can remove all expanded chilren keys.
@@ -36,12 +46,12 @@ const Demo = React.createClass({
       expandedKeys,
       autoExpandParent: false,
     })
-  },
+  }
   onCheck(checkedKeys) {
     this.setState({
       checkedKeys,
     })
-  },
+  }
   onCheckStrictly(checkedKeys, /* extra*/) {
     // const { checkedNodesPositions } = extra;
     // const pps = filterParentPosition(checkedNodesPositions.map(i => i.pos));
@@ -55,13 +65,13 @@ const Demo = React.createClass({
       checkStrictlyKeys: cks,
       // checkStrictlyKeys: checkedKeys,
     })
-  },
+  }
   onSelect(selectedKeys, info) {
     console.log('onSelect', selectedKeys, info)
     this.setState({
       selectedKeys,
     })
-  },
+  }
   onRbSelect(selectedKeys, info) {
     // eslint-disable-next-line no-underscore-dangle
     let _selectedKeys = selectedKeys
@@ -71,17 +81,22 @@ const Demo = React.createClass({
     this.setState({
       selectedKeys: _selectedKeys,
     })
-  },
+  }
   onClose() {
     this.setState({
       visible: false,
     })
-  },
-  handleOk() {
+  }
+  onTriggerChecked() {
+    this.setState({
+      checkedKeys: [`0-0-${parseInt(Math.random() * 3, 10)}-key`],
+    })
+  }
+  onOk() {
     this.setState({
       visible: false,
     })
-  },
+  }
   showModal() {
     this.setState({
       expandedKeys: ['0-0-0-key', '0-0-1-key'],
@@ -94,44 +109,25 @@ const Demo = React.createClass({
         treeData: [...gData],
       })
     }, 2000)
-  },
-  triggerChecked() {
-    this.setState({
-      checkedKeys: [`0-0-${parseInt(Math.random() * 3, 10)}-key`],
-    })
-  },
+  }
+
   render() {
-    const loop = data => {
-      return data.map((item) => {
-        return (
-          <TreeNode
-            key={item.key} items={(item.children && item.children.length) ? loop(item.children) : null}
-            disableCheckbox={item.key === '0-0-0-key'}
-          >
-            {item.title}
-          </TreeNode>
-        )
-      })
-    }
-    // console.log(getRadioSelectKeys(gData, this.state.selectedKeys));
+    const loop = (data) => (
+      data.map((item) => (
+        <TreeNode
+          key={item.key}
+          items={(item.children && item.children.length) ? loop(item.children) : null}
+          disableCheckbox={item.key === '0-0-0-key'}
+        >
+          {item.title}
+        </TreeNode>
+      ))
+    )
+
     return (<div style={{ padding: '0 20px' }}>
       <h2>dialog</h2>
       <button className="btn btn-primary" onClick={this.showModal}>show dialog</button>
-      <Modal
-        title="TestDemo" visible={this.state.visible}
-        onOk={this.handleOk} onClose={this.onClose}
-      >
-        {this.state.treeData.length ? (
-          <Tree
-            checkable className="dialog-tree"
-            onExpand={this.onExpand} expandedKeys={this.state.expandedKeys}
-            autoExpandParent={this.state.autoExpandParent}
-            onCheck={this.onCheck} checkedKeys={this.state.checkedKeys}
-          >
-            {loop(this.state.treeData)}
-          </Tree>
-        ) : 'loading...'}
-      </Modal>
+
 
       <h2>controlled</h2>
       <Tree
@@ -143,11 +139,12 @@ const Demo = React.createClass({
       >
         {loop(gData)}
       </Tree>
-      <button onClick={this.triggerChecked}>trigger checked</button>
+      <button onClick={this.onTriggerChecked}>trigger checked</button>
 
       <h2>checkStrictly</h2>
       <Tree
-        checkable multiple={this.props.multiple} defaultExpandAll
+        checkable multiple={this.props.multiple}
+        defaultExpandAll
         onExpand={this.onExpand} expandedKeys={this.state.expandedKeys}
         onCheck={this.onCheckStrictly}
         checkedKeys={this.state.checkStrictlyKeys}
@@ -156,7 +153,7 @@ const Demo = React.createClass({
         {loop(gData)}
       </Tree>
 
-      <h2>radio's behavior select (in the same level)</h2>
+      <h2>radios behavior select (in the same level)</h2>
       <Tree
         multiple defaultExpandAll
         onSelect={this.onRbSelect}
@@ -165,7 +162,27 @@ const Demo = React.createClass({
         {loop(gData)}
       </Tree>
     </div>)
-  },
-})
+  }
+}
 
 export { Demo as default }
+
+/*
+
+<Modal
+  title="TestDemo" visible={this.state.visible}
+  onOk={this.onOk} onClose={this.onClose}
+>
+  {this.state.treeData.length ? (
+    <Tree
+      checkable className="dialog-tree"
+      onExpand={this.onExpand} expandedKeys={this.state.expandedKeys}
+      autoExpandParent={this.state.autoExpandParent}
+      onCheck={this.onCheck} checkedKeys={this.state.checkedKeys}
+    >
+      {loop(this.state.treeData)}
+    </Tree>
+  ) : 'loading...'}
+</Modal>
+
+*/

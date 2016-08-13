@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react'
-import 'react-tree-component/assets/index.less'
-import Tree, { TreeNode } from 'react-tree-component'
+import '../../assets/index.less'
+import Tree, { TreeNode } from '../../src'
 /* eslint-enable */
 
 function generateTreeNodes(treeNode) {

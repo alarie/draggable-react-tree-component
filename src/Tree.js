@@ -2,9 +2,14 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import {
-  loopAllChildren, isInclude, getOffset,
-  filterParentPosition, handleCheckState, getCheck,
-  getStrictlyValue, arraysEqual,
+  loopAllChildren,
+  isInclude,
+  getOffset,
+  filterParentPosition,
+  handleCheckState,
+  getCheck,
+  getStrictlyValue,
+  arraysEqual,
 } from './util'
 
 const DRAG_EXPAND_DELAY = 500
@@ -102,6 +107,7 @@ class Tree extends React.Component {
     let expandedKeys = this.state.expandedKeys
 
     const updateState = () => {
+
       expandedKeys = this.updateExpandedKeys(treeNode, { expand: true })
 
       if (expandedKeys) {
@@ -177,17 +183,26 @@ class Tree extends React.Component {
     }
 
     const posArr = treeNode.props.pos.split('-')
+    const dragPosArr = this.dragNode.props.pos.split('-')
 
     const res = {
       event: e,
       node: treeNode,
       dragNode: this.dragNode,
       dragNodesKeys: [...this.dragNodesKeys],
-      dropPosition: this.dropPosition + Number(posArr[posArr.length - 1]),
+      dropPositionOnNode: this.dropPosition,
+      dropPosition: Number(posArr.slice(-1)[0]),
+      dragPosition: Number(dragPosArr.slice(-1)[0]),
+      isSameLevel: posArr.slice(0, -1).join('-') === dragPosArr.slice(0, -1).join('-')
     }
 
-    if (this.dropPosition !== 0) {
+    if (res.dropPositionOnNode !== 0) {
       res.dropToGap = true
+      const parentPos = posArr.slice(0, -1).join('-')
+
+      this.traverseToKey(parentPos, (item, index, pos, eventKey) => {
+        res.node.props = { eventKey }
+      })
     }
 
     // restore expanded keys
@@ -201,6 +216,11 @@ class Tree extends React.Component {
     // reset
     this.dropPosition = null
     this.currDragOverKey = null
+
+    this.setState({
+      expandedKeys: res.rawExpandedKeys.concat([res.node.props.eventKey]),
+    })
+
 
     return undefined
 
@@ -465,6 +485,16 @@ class Tree extends React.Component {
       }
     })
     return dragNodesKeys
+  }
+
+  traverseToKey(key, fn) {
+    loopAllChildren(this.props.children, (item, index, pos, newKey, siblingPos, parent) => {
+      if (pos === key) {
+        fn(item, index, pos, newKey, siblingPos, parent)
+        return true
+      }
+      return false
+    })
   }
 
   isOverGap(e, treeNode) {

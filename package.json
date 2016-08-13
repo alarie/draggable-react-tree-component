@@ -1,5 +1,5 @@
 {
-  "name": "draggable-react-tree-component",
+  "name": "draggable-draggable-react-tree-component",
   "version": "1.0.3",
   "description": "A (trying to be) lightweight tree component for react.",
   "keywords": [
@@ -16,14 +16,14 @@
     "assets/*.css",
     "lib"
   ],
-  "homepage": "http://github.com/alarie/react-tree-component",
+  "homepage": "http://github.com/alarie/draggable-react-tree-component",
   "author": "simon-schmidt@alarie.de",
   "repository": {
     "type": "git",
-    "url": "git@github.com:alarie/react-tree-component.git"
+    "url": "git@github.com:alarie/draggable-react-tree-component.git"
   },
   "bugs": {
-    "url": "http://github.com/alarie/react-tree-component/issues"
+    "url": "http://github.com/alarie/draggable-react-tree-component/issues"
   },
   "licenses": "MIT",
   "scripts": {
@@ -49,6 +49,7 @@
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
+    "classnames": "2.x",
     "css-loader": "^0.23.1",
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",
@@ -64,16 +65,15 @@
     "milligram": "^1.1.0",
     "pre-commit": "^1.1.3",
     "raw-loader": "^0.5.1",
+    "rc-animate": "2.x",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "text-loader": "0.0.1",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "classnames": "2.x",
-    "rc-animate": "2.x",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0"
+    "webpack-dev-server": "^1.14.1"
   },
   "pre-commit": [
     "lint:fix",

@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from 'react'
-import 'react-tree-component/assets/index.less'
+import '../..//assets/index.less'
 import './basic.less'
-import Tree, { TreeNode } from 'react-tree-component'
+import Tree, { TreeNode } from '../../src/'
 /* eslint-enable */
 
 class Demo extends Component {

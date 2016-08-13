@@ -75,7 +75,7 @@ export function getOffset(ele) {
 }
 /* eslint-enable */
 
-function getChildrenlength(children) {
+function getChildrenLength(children) {
   let len = 1
   if (Array.isArray(children)) {
     len = children.length
@@ -96,14 +96,24 @@ function getSiblingPosition(index, len, siblingPosition) {
 }
 
 export function loopAllChildren(childs, callback, parent) {
+  let breakOut = false
   const loop = (children, level, _parent) => {
-    const len = getChildrenlength(children)
+    const len = getChildrenLength(children)
     React.Children.forEach(children, (item, index) => {
+
+      if (breakOut) {
+        return
+      }
+
       const pos = `${level}-${index}`
       if (item.props.items && item.type && item.type.isTreeNode) {
         loop(item.props.items, pos, { node: item, pos })
       }
-      callback(item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent)
+
+      breakOut = callback(
+        item, index, pos, item.key || pos, getSiblingPosition(index, len, {}), _parent
+      )
+
     })
   }
   loop(childs, 0, parent)
