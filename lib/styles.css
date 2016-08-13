@@ -1,297 +1,240 @@
-@treePrefixCls: react-tree;
-.@{treePrefixCls} {
+.react-tree {
   margin: 0;
   padding: 5px;
-
-  li {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    white-space: nowrap;
-    outline: 0;
-
-    .react-tree-item-label {
-      position: relative;
-
-      &:hover {
-        background-color: rgba(49, 106, 197, 0.4);
-      }
-
-      &-active {
-        &,
-        &:hover,
-        a {
-          background-color: #316ac5;
-          color: white;
-        }
-      }
-
-      .draggable {
-        // padding-left: 18px;
-      }
-
-      .@{treePrefixCls}-expander {
-        position: absolute;
-        top:0;
-        left:0;
-      }
-    }
-
-    .draggable[draggable],
-    .draggable[draggable="true"] {
-      display: block;
-      color: #333;
-      -moz-user-select: none;
-      -khtml-user-select: none;
-      -webkit-user-select: none;
-      user-select: none;
-      /* Required to make elements draggable in old WebKit */
-      -khtml-user-drag: element;
-      -webkit-user-drag: element;
-
-      > a {
-        text-decoration: none;
-        display: block;
-      }
-    }
-
-    .@{treePrefixCls}-item-label .draggable[draggable] {
-      position: relative;
-      &::before,
-      &::before {
-        display: none;
-        content: '\0020';
-        position: absolute;
-        left: 18px;
-        right: 0;
-        pointer-events: none;
-        border-top: 2px #316ac5 solid;
-      }
-    }
-    &.drag-over {
-      > .react-tree-item-label .draggable[draggable] {
-        &,
-        a {
-          background-color: #316ac5;
-          color: white;
-        }
-      }
-    }
-    &.drag-over-gap-top {
-      > .@{treePrefixCls}-item-label .draggable[draggable] {
-
-        &::before,
-        &::before {
-          display: block;
-          top: 0;
-        }
-
-      }
-    }
-    &.drag-over-gap-bottom {
-      > .@{treePrefixCls}-item-label .draggable[draggable] {
-
-        &::before,
-        &::before {
-          display: block;
-          bottom: 0;
-        }
-
-      }
-    }
-
-    &.filter-node {
-      > .@{treePrefixCls}-item-label .draggable {
-        color: #a60000!important;
-        font-weight: bold!important;
-      }
-    }
-    ul {
-      margin: 0;
-      padding: 0;
-      &.@{treePrefixCls}-line {
-        // background: url("https://t.alipayobjects.com/images/T13BtfXl0mXXXXXXXX.gif") 0 0 repeat-y;
-      }
-    }
-    .draggable {
-      display: inline-block;
-      padding: 0 2px;
-      margin: 0;
-      cursor: pointer;
-      height: 18px;
-      text-decoration: none;
-      vertical-align: top;
-    }
-    span {
-      &.@{treePrefixCls}-expander,
-      &.@{treePrefixCls}-checkbox,
-      &.@{treePrefixCls}-iconEle {
-        line-height: 16px;
-        margin-right: 2px;
-        width: 16px;
-        height: 16px;
-        display: inline-block;
-        vertical-align: middle;
-        border: 0 none;
-        cursor: pointer;
-        outline: none;
-      }
-
-      &.@{treePrefixCls}-checkbox,
-      &.@{treePrefixCls}-iconEle {
-        background-color: transparent;
-        background-repeat: no-repeat;
-        background-attachment: scroll;
-        background-image: url("https://t.alipayobjects.com/images/T1.ANfXhXtXXXXXXXX.png");
-      }
-
-      &.@{treePrefixCls}-expander {
-        background: none;
-        position: relative;
-
-        &:before,
-        &::before {
-          position: absolute;
-          font-size: 0.6em;
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          line-height: 16px;
-          text-align: center;
-          top: 0;
-          left: 0;
-          content: '\0020';
-          transform: rotate(0deg);
-          transform-origin: 50% 50%;
-          transition: transform 0.3s ease-in;
-        }
-      }
-
-      &.@{treePrefixCls}-expander {
-        &.@{treePrefixCls}-expander_close {
-          &:before,
-          &::before {
-            content: '▶︎';
-          }
-        }
-        &.@{treePrefixCls}-expander_open {
-          &:before,
-          &::before {
-            content: '▶︎';
-            transform: rotate(90deg);
-          }
-        }
-      }
-
-      &.@{treePrefixCls}-checkbox {
-        width: 13px;
-        height: 13px;
-        margin: 0 3px;
-        background-position: 0 0;
-        &-checked {
-          background-position: -14px 0;
-        }
-        &-indeterminate {
-          background-position: -14px -28px;
-        }
-        &-disabled {
-          background-position: 0 -56px;
-        }
-        &.@{treePrefixCls}-checkbox-checked.@{treePrefixCls}-checkbox-disabled {
-          background-position: -14px -56px;
-        }
-        &.@{treePrefixCls}-checkbox-indeterminate.@{treePrefixCls}-checkbox-disabled {
-          position: relative;
-          background: #ccc;
-          border-radius: 3px;
-          &::after {
-            content: ' ';
-            -webkit-transform: scale(1);
-            transform: scale(1);
-            position: absolute;
-            left: 3px;
-            top: 5px;
-            width: 5px;
-            height: 0;
-            border: 2px solid #fff;
-            border-top: 0;
-            border-left: 0;
-          }
-        }
-      }
-    }
-  }
-  &-child-tree {
-    display: none;
-    &-open {
-      display: block;
-    }
-  }
-  &-treenode-disabled {
-    > .react-tree-item-label span,
-    > .react-tree-item-label .draggable,
-    > .react-tree-item-label .draggable span {
-      color: #ccc;
-      cursor: not-allowed;
-    }
-  }
-
-  &-icon__open {
-    margin-right: 2px;
-    background-position: -110px -16px;
-    vertical-align: top;
-  }
-  &-icon__close {
-    margin-right: 2px;
-    background-position: -110px 0;
-    vertical-align: top;
-  }
 }
-
-
-
-
-
-
-
-
-@spinkit-spinner-margin: 0 auto;
-@spinkit-size: 16px;
-@spinkit-spinner-color: #333;
-
-.sk-wave {
-  @rectCount: 5;
-  @animationDuration: 1.2s;
-  @delayRange: 0.4s;
+.react-tree li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  white-space: nowrap;
+  outline: 0;
+}
+.react-tree li .react-tree-item-label {
+  position: relative;
+}
+.react-tree li .react-tree-item-label:hover {
+  background-color: rgba(49, 106, 197, 0.4);
+}
+.react-tree li .react-tree-item-label-active,
+.react-tree li .react-tree-item-label-active:hover,
+.react-tree li .react-tree-item-label-active a {
+  background-color: #316ac5;
+  color: white;
+}
+.react-tree li .react-tree-item-label .react-tree-expander {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.react-tree li .draggable[draggable],
+.react-tree li .draggable[draggable="true"] {
+  display: block;
+  color: #333;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+.react-tree li .draggable[draggable] > a,
+.react-tree li .draggable[draggable="true"] > a {
+  text-decoration: none;
+  display: block;
+}
+.react-tree li .react-tree-item-label .draggable[draggable] {
+  position: relative;
+}
+.react-tree li .react-tree-item-label .draggable[draggable]::before,
+.react-tree li .react-tree-item-label .draggable[draggable]::before {
+  display: none;
+  content: '\0020';
+  position: absolute;
+  left: 18px;
+  right: 0;
+  pointer-events: none;
+  border-top: 2px #316ac5 solid;
+}
+.react-tree li.drag-over > .react-tree-item-label .draggable[draggable],
+.react-tree li.drag-over > .react-tree-item-label .draggable[draggable] a {
+  background-color: #316ac5;
+  color: white;
+}
+.react-tree li.drag-over-gap-top > .react-tree-item-label .draggable[draggable]::before,
+.react-tree li.drag-over-gap-top > .react-tree-item-label .draggable[draggable]::before {
+  display: block;
+  top: 0;
+}
+.react-tree li.drag-over-gap-bottom > .react-tree-item-label .draggable[draggable]::before,
+.react-tree li.drag-over-gap-bottom > .react-tree-item-label .draggable[draggable]::before {
+  display: block;
+  bottom: 0;
+}
+.react-tree li.filter-node > .react-tree-item-label .draggable {
+  color: #a60000!important;
+  font-weight: bold!important;
+}
+.react-tree li ul {
+  margin: 0;
+  padding: 0;
+}
+.react-tree li .draggable {
   display: inline-block;
-  margin: @spinkit-spinner-margin;
-  width: @spinkit-size * 1.25;
-  height: @spinkit-size;
+  padding: 0 2px;
+  margin: 0;
+  cursor: pointer;
+  height: 18px;
+  text-decoration: none;
+  vertical-align: top;
+}
+.react-tree li span.react-tree-expander,
+.react-tree li span.react-tree-checkbox,
+.react-tree li span.react-tree-iconEle {
+  line-height: 16px;
+  margin-right: 2px;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  border: 0 none;
+  cursor: pointer;
+  outline: none;
+}
+.react-tree li span.react-tree-checkbox,
+.react-tree li span.react-tree-iconEle {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-image: url("https://t.alipayobjects.com/images/T1.ANfXhXtXXXXXXXX.png");
+}
+.react-tree li span.react-tree-expander {
+  background: none;
+  position: relative;
+}
+.react-tree li span.react-tree-expander:before,
+.react-tree li span.react-tree-expander::before {
+  position: absolute;
+  font-size: 0.6em;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  top: 0;
+  left: 0;
+  content: '\0020';
+  transform: rotate(0deg);
+  transform-origin: 50% 50%;
+  transition: transform 0.3s ease-in;
+}
+.react-tree li span.react-tree-expander.react-tree-expander_close:before,
+.react-tree li span.react-tree-expander.react-tree-expander_close::before {
+  content: '▶︎';
+}
+.react-tree li span.react-tree-expander.react-tree-expander_open:before,
+.react-tree li span.react-tree-expander.react-tree-expander_open::before {
+  content: '▶︎';
+  transform: rotate(90deg);
+}
+.react-tree li span.react-tree-checkbox {
+  width: 13px;
+  height: 13px;
+  margin: 0 3px;
+  background-position: 0 0;
+}
+.react-tree li span.react-tree-checkbox-checked {
+  background-position: -14px 0;
+}
+.react-tree li span.react-tree-checkbox-indeterminate {
+  background-position: -14px -28px;
+}
+.react-tree li span.react-tree-checkbox-disabled {
+  background-position: 0 -56px;
+}
+.react-tree li span.react-tree-checkbox.react-tree-checkbox-checked.react-tree-checkbox-disabled {
+  background-position: -14px -56px;
+}
+.react-tree li span.react-tree-checkbox.react-tree-checkbox-indeterminate.react-tree-checkbox-disabled {
+  position: relative;
+  background: #ccc;
+  border-radius: 3px;
+}
+.react-tree li span.react-tree-checkbox.react-tree-checkbox-indeterminate.react-tree-checkbox-disabled::after {
+  content: ' ';
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  position: absolute;
+  left: 3px;
+  top: 5px;
+  width: 5px;
+  height: 0;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-left: 0;
+}
+.react-tree-child-tree {
+  display: none;
+}
+.react-tree-child-tree-open {
+  display: block;
+}
+.react-tree-treenode-disabled > .react-tree-item-label span,
+.react-tree-treenode-disabled > .react-tree-item-label .draggable,
+.react-tree-treenode-disabled > .react-tree-item-label .draggable span {
+  color: #ccc;
+  cursor: not-allowed;
+}
+.react-tree-icon__open {
+  margin-right: 2px;
+  background-position: -110px -16px;
+  vertical-align: top;
+}
+.react-tree-icon__close {
+  margin-right: 2px;
+  background-position: -110px 0;
+  vertical-align: top;
+}
+.sk-wave {
+  display: inline-block;
+  margin: 0 auto;
+  width: 20px;
+  height: 16px;
   text-align: center;
   font-size: 10px;
   vertical-align: center;
-
-  .sk-rect {
-    background-color: @spinkit-spinner-color;
-    height: 100%;
-    width: 1px;
-    margin-left: 1px;
-    display: inline-block;
-    animation: sk-waveStretchDelay @animationDuration infinite ease-in-out;
-  }
-
-  .generate-rects(@rectCount);
-
-  .generate-rects(@n, @i: 1) when (@i =< @n) {
-    .sk-rect.sk-rect@{i} {
-      animation-delay: (@delayRange / (@n - 1)) * (@i - 1);
-    }
-
-    .generate-rects(@n, (@i + 1));
-  }
 }
-
+.sk-wave .sk-rect {
+  background-color: #333;
+  height: 100%;
+  width: 1px;
+  margin-left: 1px;
+  display: inline-block;
+  animation: sk-waveStretchDelay 1.2s infinite ease-in-out;
+}
+.sk-wave .sk-rect.sk-rect1 {
+  animation-delay: 0s;
+}
+.sk-wave .sk-rect.sk-rect2 {
+  animation-delay: 0.1s;
+}
+.sk-wave .sk-rect.sk-rect3 {
+  animation-delay: 0.2s;
+}
+.sk-wave .sk-rect.sk-rect4 {
+  animation-delay: 0.3s;
+}
+.sk-wave .sk-rect.sk-rect5 {
+  animation-delay: 0.4s;
+}
 @keyframes sk-waveStretchDelay {
-  0%, 40%, 100% { transform: scaleY(0.4) }
-  20% { transform: scaleY(1.0) }
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+  }
 }
