@@ -7,6 +7,8 @@ import {
   getStrictlyValue, arraysEqual,
 } from './util'
 
+const DRAG_EXPAND_DELAY = 500
+
 function noop() {}
 
 class Tree extends React.Component {
@@ -52,38 +54,51 @@ class Tree extends React.Component {
   }
 
   onDragStart(e, treeNode) {
+
     this.dragNode = treeNode
     this.dragNodesKeys = this.getDragNodes(treeNode)
+
     const st = {
       dragNodesKeys: this.dragNodesKeys,
     }
-    const expandedKeys = this.getExpandedKeys(treeNode, false)
+
+    // collapse the currently dragged node
+    const expandedKeys = this.updateExpandedKeys(treeNode, { expand: false })
+
     if (expandedKeys) {
       // Controlled expand, save and then reset
-      this.getRawExpandedKeys()
+      this.cacheExpandedKeys()
       st.expandedKeys = expandedKeys
     }
+
     this.setState(st)
+
     this.props.onDragStart({
       event: e,
       node: treeNode,
     })
+
     this._dropTrigger = false
+
   }
 
   onDragEnterGap(e, treeNode) {
+
     const offsetTop = (0, getOffset)(treeNode.selectHandle).top
     const offsetHeight = treeNode.selectHandle.offsetHeight
     const pageY = e.pageY
     const gapHeight = 2
+
     if (pageY > (offsetTop + offsetHeight) - gapHeight) {
       this.dropPosition = 1
       return 1
     }
+
     if (pageY < offsetTop + gapHeight) {
       this.dropPosition = -1
       return -1
     }
+
     this.dropPosition = 0
     return 0
   }
@@ -92,28 +107,39 @@ class Tree extends React.Component {
 
     const enterGap = this.onDragEnterGap(e, treeNode)
 
+    // dragging over itself
     if (
       this.dragNode.props.eventKey === treeNode.props.eventKey &&
       enterGap === 0
     ) {
-      this.setState({
-        dragOverNodeKey: '',
-      })
+      this.setState({ dragOverNodeKey: '' })
       return
     }
 
-    const st = {
-      dragOverNodeKey: treeNode.props.eventKey,
+    const state = { dragOverNodeKey: treeNode.props.eventKey }
+
+    let expandedKeys = this.state.expandedKeys
+
+    const updateState = () => {
+      expandedKeys = this.updateExpandedKeys(treeNode, { expand: true })
+
+      if (expandedKeys) {
+        this.cacheExpandedKeys()
+        state.expandedKeys = expandedKeys
+      }
+
     }
 
-    const expandedKeys = this.getExpandedKeys(treeNode, true)
-
-    if (expandedKeys) {
-      this.getRawExpandedKeys()
-      st.expandedKeys = expandedKeys
+    if (!enterGap) {
+      this.currDragOverKey = treeNode.props.eventKey
+      this.dragEnterTimeout = setTimeout(() => {
+        updateState()
+        this.setState(state)
+      }, this.props.dragExpandDelay || DRAG_EXPAND_DELAY)
     }
 
-    this.setState(st)
+
+    this.setState(state)
 
     this.props.onDragEnter({
       event: e,
@@ -124,7 +150,14 @@ class Tree extends React.Component {
   }
 
   onDragOver(e, treeNode) {
+
+    if (this.currDragOverKey !== treeNode.props.eventKey) {
+      clearTimeout(this.dragEnterTimeout)
+      this.onDragEnter(e, treeNode)
+    }
+
     this.props.onDragOver({ event: e, node: treeNode })
+
   }
 
   onDragLeave(e, treeNode) {
@@ -132,11 +165,16 @@ class Tree extends React.Component {
   }
 
   onDrop(e, treeNode) {
+
     const key = treeNode.props.eventKey
+
+    this.currDragOverKey = null
+
     this.setState({
       dragOverNodeKey: '',
       dropNodeKey: key,
     })
+
     if (this.dragNodesKeys.indexOf(key) > -1) {
       if (console.warn) {
         console.warn('can not drop to dragNode(include it\'s children node)')
@@ -155,12 +193,17 @@ class Tree extends React.Component {
     if (this.dropPosition !== 0) {
       res.dropToGap = true
     }
+
+    // restore expanded keys
     if ('expandedKeys' in this.props) {
       res.rawExpandedKeys = [...this._rawExpandedKeys] || [...this.state.expandedKeys]
     }
+
     this.props.onDrop(res)
     this._dropTrigger = true
+
     return undefined
+
   }
 
   onExpand(treeNode) {
@@ -402,12 +445,6 @@ class Tree extends React.Component {
     return selectedKeys
   }
 
-  getRawExpandedKeys() {
-    if (!this._rawExpandedKeys && ('expandedKeys' in this.props)) {
-      this._rawExpandedKeys = [...this.state.expandedKeys]
-    }
-  }
-
   getOpenTransitionName() {
     const props = this.props
     let transitionName = props.openTransitionName
@@ -430,20 +467,35 @@ class Tree extends React.Component {
     return dragNodesKeys
   }
 
-  getExpandedKeys(treeNode, expand) {
+  cacheExpandedKeys() {
+
+    if (!this._rawExpandedKeys && ('expandedKeys' in this.props)) {
+      this._rawExpandedKeys = [...this.state.expandedKeys]
+    }
+
+  }
+
+  updateExpandedKeys(treeNode, val) {
+
     const key = treeNode.props.eventKey
     const expandedKeys = this.state.expandedKeys
     const expandedIndex = expandedKeys.indexOf(key)
     let exKeys
-    if (expandedIndex > -1 && !expand) {
+
+    // collapse
+    if (expandedIndex > -1 && !val.expand) {
       exKeys = [...expandedKeys]
       exKeys.splice(expandedIndex, 1)
       return exKeys
     }
-    if (expand && expandedKeys.indexOf(key) === -1) {
+
+    // expand
+    if (val.expand && expandedKeys.indexOf(key) === -1) {
       return expandedKeys.concat([key])
     }
+
     return null
+
   }
 
   filterTreeNode(treeNode) {
@@ -627,9 +679,11 @@ Tree.propTypes = {
   filterTreeNode: PropTypes.func,
   openTransitionName: PropTypes.string,
   openAnimation: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  dragExpandDelay: PropTypes.number
 }
 
 Tree.defaultProps = {
+  dragExpandDelay: DRAG_EXPAND_DELAY,
   prefixCls: 'react-tree',
   showLine: false,
   showIcon: true,

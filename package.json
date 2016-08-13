@@ -28,7 +28,7 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "start": "webpack-dev-server -c --port=8888",
-    "dev": "webpack-dev-server --hot",
+    "dev": "webpack-dev-server -c --hot",
     "compile": "npm run clean && babel src --out-dir lib && lessc assets/index.less > lib/styles.css",
     "build": "npm run compile && NODE_ENV=production webpack -p && cp examples/index.html dist/index.html",
     "deploy": "npm run build && gh-pages -d dist"

@@ -1,10 +1,15 @@
 /* eslint import/no-extraneous-dependencies: off */
+// eslint-disable-next-line
+'use strict'
+
 const path = require('path')
 
 const Webpack = require('webpack')
 
-const buildPath = path.resolve(__dirname, 'dist', 'build')
+let buildPath = path.resolve(__dirname, 'dist', 'build')
+const srcPath = path.resolve(__dirname, 'src')
 const mainPath = path.resolve(__dirname, 'examples', 'main.js')
+const publicPath = '/examples/build/'
 
 const plugins = []
 const entry = []
@@ -14,26 +19,24 @@ if (process.env.NODE_ENV !== 'production') {
     // For hot style updates
     'webpack/hot/dev-server',
     // The script refreshing the browser on none hot updates
-    'webpack-dev-server/client?http://localhost:8080'
+    'webpack-dev-server/client?http://localhost:8080',
+
+    srcPath
   )
   plugins.push(new Webpack.HotModuleReplacementPlugin())
+  buildPath = path.resolve(__dirname, 'examples', 'build')
 }
 
+const output = {
+  filename: 'bundle.js',
+  path: buildPath,
+  publicPath
+}
 entry.push(mainPath)
 
 module.exports = {
   entry,
-  // contentBase: 'examples',
-  output: {
-    filename: 'bundle.js',
-    path: buildPath,
-    publicPath: '/examples/build/',
-  },
-  externals: {
-    // react: 'React',
-    // 'react-dom': 'ReactDOM'
-  },
-  devtool: 'source-map',
+  output,
   plugins,
   module: {
     loaders: [
@@ -42,4 +45,5 @@ module.exports = {
       { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' }
     ]
   },
+  devtool: 'source-map',
 }
