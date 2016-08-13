@@ -18,6 +18,7 @@ class TreeNode extends React.Component {
       'onMouseEnter',
       'onMouseLeave',
       'onDragStart',
+      'onDragEnd',
       'onDragEnter',
       'onDragOver',
       'onDragLeave',
@@ -79,15 +80,10 @@ class TreeNode extends React.Component {
     // e.preventDefault();
     e.stopPropagation()
 
-
-    // if (this.props.selected) {
-    //   // deselect
-    //   this.props.root.onSelect(this);
-    // }
-
     this.setState({
       dragNodeHighlight: true,
     })
+
     this.props.root.onDragStart(e, this)
     try {
       // ie throw error
@@ -96,6 +92,19 @@ class TreeNode extends React.Component {
     finally {
       // empty
     }
+  }
+
+  onDragEnd(e) {
+    // console.log('dragstart', this.props.eventKey, e);
+    // e.preventDefault();
+    e.stopPropagation()
+
+    this.setState({
+      dragNodeHighlight: false,
+    })
+
+    this.props.root.onEndStart(e, this)
+
   }
 
   onDragEnter(e) {
@@ -401,7 +410,7 @@ class TreeNode extends React.Component {
       if (props.draggable) {
         domProps.draggable = true
         domProps.onDragStart = this.onDragStart
-        domProps.className = `${domProps.className} draggable`
+        domProps.className = `${domProps.className || ''} draggable`
         domProps['aria-grabbed'] = true
       }
 
@@ -423,10 +432,11 @@ class TreeNode extends React.Component {
     const expandState = props.expanded ? 'open' : 'close'
 
 
-    const selected = props.selected ||
+    const selected = props.selected // ||
       // eslint-disable-next-line no-underscore-dangle
-      (!props._dropTrigger &&
-      this.state.dragNodeHighlight)
+      // hightlight the node while it's being dragged
+      // (!props._dropTrigger &&
+      // this.state.dragNodeHighlight)
 
     // show the expander if...
     // 1. the element has children

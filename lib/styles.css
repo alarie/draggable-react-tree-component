@@ -54,8 +54,9 @@
   position: absolute;
   left: 18px;
   right: 0;
+  border-top: 2px #13284a solid;
+  z-index: 1;
   pointer-events: none;
-  border-top: 2px #316ac5 solid;
 }
 .react-tree li.drag-over > .react-tree-item-label .draggable[draggable],
 .react-tree li.drag-over > .react-tree-item-label .draggable[draggable] a {
@@ -85,7 +86,6 @@
   padding: 0 2px;
   margin: 0;
   cursor: pointer;
-  height: 18px;
   text-decoration: none;
   vertical-align: top;
 }

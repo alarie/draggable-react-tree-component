@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react'
 import { gData } from './util'
-import Tree, { TreeNode } from 'react-tree-component'
+import Tree, { TreeNode } from '../../src'
 import 'react-tree-component/assets/index.less'
 /* eslint-enable */
 import './draggable.less'

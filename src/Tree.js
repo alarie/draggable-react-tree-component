@@ -8,6 +8,7 @@ import {
 } from './util'
 
 const DRAG_EXPAND_DELAY = 500
+const DROP_GAP_SIZE = 2
 
 function noop() {}
 
@@ -62,12 +63,13 @@ class Tree extends React.Component {
       dragNodesKeys: this.dragNodesKeys,
     }
 
+    this.cacheExpandedKeys()
+
     // collapse the currently dragged node
     const expandedKeys = this.updateExpandedKeys(treeNode, { expand: false })
 
     if (expandedKeys) {
       // Controlled expand, save and then reset
-      this.cacheExpandedKeys()
       st.expandedKeys = expandedKeys
     }
 
@@ -82,30 +84,9 @@ class Tree extends React.Component {
 
   }
 
-  onDragEnterGap(e, treeNode) {
-
-    const offsetTop = (0, getOffset)(treeNode.selectHandle).top
-    const offsetHeight = treeNode.selectHandle.offsetHeight
-    const pageY = e.pageY
-    const gapHeight = 2
-
-    if (pageY > (offsetTop + offsetHeight) - gapHeight) {
-      this.dropPosition = 1
-      return 1
-    }
-
-    if (pageY < offsetTop + gapHeight) {
-      this.dropPosition = -1
-      return -1
-    }
-
-    this.dropPosition = 0
-    return 0
-  }
-
   onDragEnter(e, treeNode) {
 
-    const enterGap = this.onDragEnterGap(e, treeNode)
+    const enterGap = this.isOverGap(e, treeNode)
 
     // dragging over itself
     if (
@@ -137,6 +118,9 @@ class Tree extends React.Component {
         this.setState(state)
       }, this.props.dragExpandDelay || DRAG_EXPAND_DELAY)
     }
+    else {
+      this.currDragOverKey = null
+    }
 
 
     this.setState(state)
@@ -151,7 +135,9 @@ class Tree extends React.Component {
 
   onDragOver(e, treeNode) {
 
-    if (this.currDragOverKey !== treeNode.props.eventKey) {
+    if (this.isOverGap(e, treeNode) ||
+      this.currDragOverKey !== treeNode.props.eventKey
+    ) {
       clearTimeout(this.dragEnterTimeout)
       this.onDragEnter(e, treeNode)
     }
@@ -164,11 +150,19 @@ class Tree extends React.Component {
     this.props.onDragLeave({ event: e, node: treeNode })
   }
 
+  onDragEnd(e, treeNode) {
+    this.dropPosition = null
+    this.currDragOverKey = null
+    this.props.onDragEnd({ event: e, node: treeNode })
+    this.setState({
+      dragOverNodeKey: '',
+      dropNodeKey: null,
+    })
+  }
+
   onDrop(e, treeNode) {
 
     const key = treeNode.props.eventKey
-
-    this.currDragOverKey = null
 
     this.setState({
       dragOverNodeKey: '',
@@ -177,12 +171,13 @@ class Tree extends React.Component {
 
     if (this.dragNodesKeys.indexOf(key) > -1) {
       if (console.warn) {
-        console.warn('can not drop to dragNode(include it\'s children node)')
+        console.warn('Cannot drop node on one of it\'s children')
       }
       return false
     }
 
     const posArr = treeNode.props.pos.split('-')
+
     const res = {
       event: e,
       node: treeNode,
@@ -190,6 +185,7 @@ class Tree extends React.Component {
       dragNodesKeys: [...this.dragNodesKeys],
       dropPosition: this.dropPosition + Number(posArr[posArr.length - 1]),
     }
+
     if (this.dropPosition !== 0) {
       res.dropToGap = true
     }
@@ -201,6 +197,10 @@ class Tree extends React.Component {
 
     this.props.onDrop(res)
     this._dropTrigger = true
+
+    // reset
+    this.dropPosition = null
+    this.currDragOverKey = null
 
     return undefined
 
@@ -467,6 +467,25 @@ class Tree extends React.Component {
     return dragNodesKeys
   }
 
+  isOverGap(e, treeNode) {
+
+    const offsetTop = (0, getOffset)(treeNode.selectHandle).top
+    const offsetHeight = treeNode.selectHandle.offsetHeight
+    const pageY = e.pageY
+    const gapHeight = this.props.dropGapSize || DROP_GAP_SIZE
+
+    this.dropPosition = 0
+
+    if (pageY > (offsetTop + offsetHeight) - gapHeight) {
+      this.dropPosition = 1
+    }
+    else if (pageY < offsetTop + gapHeight) {
+      this.dropPosition = -1
+    }
+
+    return this.dropPosition
+  }
+
   cacheExpandedKeys() {
 
     if (!this._rawExpandedKeys && ('expandedKeys' in this.props)) {
@@ -672,6 +691,7 @@ Tree.propTypes = {
   onMouseLeave: PropTypes.func,
   onRightClick: PropTypes.func,
   onDragStart: PropTypes.func,
+  onDragEnd: PropTypes.func,
   onDragEnter: PropTypes.func,
   onDragOver: PropTypes.func,
   onDragLeave: PropTypes.func,
@@ -679,11 +699,13 @@ Tree.propTypes = {
   filterTreeNode: PropTypes.func,
   openTransitionName: PropTypes.string,
   openAnimation: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  dragExpandDelay: PropTypes.number
+  dragExpandDelay: PropTypes.number,
+  dropGapSize: PropTypes.number,
 }
 
 Tree.defaultProps = {
   dragExpandDelay: DRAG_EXPAND_DELAY,
+  dropGapSize: DROP_GAP_SIZE,
   prefixCls: 'react-tree',
   showLine: false,
   showIcon: true,
@@ -701,6 +723,7 @@ Tree.defaultProps = {
   onCheck: noop,
   onSelect: noop,
   onDragStart: noop,
+  onDragEnd: noop,
   onDragEnter: noop,
   onDragOver: noop,
   onDragLeave: noop,
