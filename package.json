@@ -77,7 +77,6 @@
     "webpack-dev-server": "^1.14.1"
   },
   "pre-commit": [
-    "lint:fix",
-    "lint"
+    "lint:fix"
   ]
 }

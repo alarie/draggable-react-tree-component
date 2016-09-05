@@ -121,6 +121,8 @@ This repository is a fork of [rc-tree]( https://github.com/react-component/tree)
 |isLeaf | whether it's leaf node | bool | false |
 |href|the link url|string|''|
 |linkClassName|the css class for the link|string|''|
+|padding|The padding that's required for the arrow icon infront of the label|number|18|
+|basePadding|The padding infront of the icon|number|0|
 
 ## Note
 

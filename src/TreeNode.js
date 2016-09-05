@@ -428,6 +428,8 @@ class TreeNode extends React.Component {
   render() {
 
     const props = this.props
+    const padding = this.props.padding
+    const basePadding = this.props.basePadding
     const prefixCls = props.prefixCls
     const expandState = props.expanded ? 'open' : 'close'
 
@@ -476,7 +478,7 @@ class TreeNode extends React.Component {
           className={classNames(`${prefixCls}-item-label `, {
             [`${prefixCls}-item-label-active`]: selected
           })}
-          style={{ paddingLeft: `${depth * 18}px` }}
+          style={{ paddingLeft: `${basePadding + (depth * padding)}px` }}
         >
           {this.renderExpander(props, isExpandable, expandState, selected)}
 
@@ -503,11 +505,15 @@ TreeNode.propTypes = {
   isLeaf: PropTypes.bool,
   root: PropTypes.object,
   onSelect: PropTypes.func,
-  items: PropTypes.node
+  items: PropTypes.node,
+  padding: PropTypes.number,
+  basePadding: PropTypes.number
 }
 
 TreeNode.defaultProps = {
   title: defaultTitle,
+  padding: 18,
+  basePadding: 0
 }
 
 export default TreeNode
