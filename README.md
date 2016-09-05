@@ -3,7 +3,7 @@
 
 A (trying to be) lightweight tree component for react.
 
-**[See examples](http://alarie.github.io/react-tree-component/#examples)**
+**[See examples](http://alarie.github.io/draggable-react-tree-component/#examples)**
 
 
 # Fork info
