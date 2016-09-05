@@ -1,4 +1,4 @@
-# react-tree-component
+# draggable-react-tree-component
 ---
 
 A (trying to be) lightweight tree component for react.
