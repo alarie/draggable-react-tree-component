@@ -27,7 +27,7 @@ class TreeNode extends React.Component {
 
     this.state = {
       dataLoading: false,
-      dragNodeHighlight: false,
+      dragNodeHighlight: false
     }
 
   }
@@ -95,7 +95,7 @@ class TreeNode extends React.Component {
   }
 
   onDragEnd(e) {
-    // console.log('dragstart', this.props.eventKey, e);
+    // console.log('dragend', this.props.eventKey, e)
     // e.preventDefault();
     e.stopPropagation()
 
@@ -410,7 +410,11 @@ class TreeNode extends React.Component {
       if (props.draggable) {
         domProps.draggable = true
         domProps.onDragStart = this.onDragStart
-        domProps.className = `${domProps.className || ''} draggable`
+        domProps.className = `${
+          domProps.className || ''
+        } ${
+          props.dropped ? 'dropped' : ''
+        } draggable `
         domProps['aria-grabbed'] = true
       }
 

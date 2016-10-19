@@ -33,6 +33,7 @@ class Tree extends React.Component {
       dragNodesKeys: '',
       dragOverNodeKey: '',
       dropNodeKey: '',
+      droppedNodeKey: null
     }
   }
 
@@ -169,10 +170,20 @@ class Tree extends React.Component {
   onDrop(e, treeNode) {
 
     const key = treeNode.props.eventKey
+    const droppedNodeKey = this.dragNode.props.eventKey
 
     this.setState({
       dragOverNodeKey: '',
       dropNodeKey: key,
+      droppedNodeKey
+    }, () => {
+      setTimeout(() => {
+        if (this.state.droppedNodeKey === droppedNodeKey) {
+          this.setState({
+            droppedNodeKey: null
+          })
+        }
+      }, 1000)
     })
 
     if (this.dragNodesKeys.indexOf(key) > -1) {
@@ -586,6 +597,7 @@ class Tree extends React.Component {
       dragOver: state.dragOverNodeKey === key && this.dropPosition === 0,
       dragOverGapTop: state.dragOverNodeKey === key && this.dropPosition === -1,
       dragOverGapBottom: state.dragOverNodeKey === key && this.dropPosition === 1,
+      dropped: state.droppedNodeKey && state.droppedNodeKey === key,
       _dropTrigger: this._dropTrigger,
       expanded: state.expandedKeys.indexOf(key) !== -1,
       selected: state.selectedKeys.indexOf(key) !== -1,
