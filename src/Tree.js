@@ -13,6 +13,7 @@ import {
 } from './util'
 
 const DRAG_EXPAND_DELAY = 500
+const DROPPED_NODE_CLASS_NAME_DELAY = 1200
 const DROP_GAP_SIZE = 2
 
 function noop() {}
@@ -33,7 +34,7 @@ class Tree extends React.Component {
       dragNodesKeys: '',
       dragOverNodeKey: '',
       dropNodeKey: '',
-      droppedNodeKey: null
+      droppedNodeKey: null,
     }
   }
 
@@ -183,7 +184,7 @@ class Tree extends React.Component {
             droppedNodeKey: null
           })
         }
-      }, 1000)
+      }, this.props.droppedNodeClassNameDelay || DROPPED_NODE_CLASS_NAME_DELAY)
     })
 
     if (this.dragNodesKeys.indexOf(key) > -1) {
@@ -701,6 +702,7 @@ class Tree extends React.Component {
 }
 
 Tree.propTypes = {
+  droppedNodeClassNameDelay: PropTypes.number,
   prefixCls: PropTypes.string,
   children: PropTypes.any,
   showLine: PropTypes.bool,
@@ -747,6 +749,7 @@ Tree.propTypes = {
 
 Tree.defaultProps = {
   dragExpandDelay: DRAG_EXPAND_DELAY,
+  droppedNodeClassNameDelay: DROPPED_NODE_CLASS_NAME_DELAY,
   dropGapSize: DROP_GAP_SIZE,
   prefixCls: 'react-tree',
   showLine: false,

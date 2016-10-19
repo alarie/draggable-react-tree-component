@@ -123,6 +123,7 @@ class Demo extends Component {
           onDragStart={this.onDragStart}
           onDragEnter={this.onDragEnter}
           onDrop={this.onDrop}
+          droppedNodeClassNameDelay={2400}
         >
           {loop(this.state.gData)}
         </Tree>

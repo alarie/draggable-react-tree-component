@@ -410,11 +410,7 @@ class TreeNode extends React.Component {
       if (props.draggable) {
         domProps.draggable = true
         domProps.onDragStart = this.onDragStart
-        domProps.className = `${
-          domProps.className || ''
-        } ${
-          props.dropped ? 'dropped' : ''
-        } draggable `
+        domProps.className = `${domProps.className || ''} draggable `
         domProps['aria-grabbed'] = true
       }
 
@@ -479,9 +475,13 @@ class TreeNode extends React.Component {
 
         <div
           ref={(ref) => (this.selectHandle = ref)}
-          className={classNames(`${prefixCls}-item-label `, {
-            [`${prefixCls}-item-label-active`]: selected
-          })}
+          className={classNames(
+            `${prefixCls}-item-label `,
+            {
+              [`${prefixCls}-item-label-active`]: selected,
+              [`${prefixCls}-item-dropped`]: props.dropped
+            }
+          )}
           style={{ paddingLeft: `${basePadding + (depth * padding)}px` }}
         >
           {this.renderExpander(props, isExpandable, expandState, selected)}
