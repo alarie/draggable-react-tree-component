@@ -1,6 +1,6 @@
 {
   "name": "draggable-react-tree-component",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A (trying to be) lightweight tree component for react.",
   "keywords": [
     "draggable",
