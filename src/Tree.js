@@ -27,6 +27,8 @@ class Tree extends React.Component {
     this.contextmenuKeys = []
     this.checkedKeysChange = true
 
+    this.dragEnterTimeout = null
+
     this.state = {
       expandedKeys: this.getDefaultExpandedKeys(props),
       checkedKeys: this.getDefaultCheckedKeys(props),
@@ -97,6 +99,11 @@ class Tree extends React.Component {
 
     // dragging over itself
     if (
+      this.dragNode &&
+      this.dragNode.props &&
+      this.dragNode.props.eventKey &&
+      treeNode.props &&
+      treeNode.props.eventKey &&
       this.dragNode.props.eventKey === treeNode.props.eventKey &&
       enterGap === 0
     ) {
@@ -121,10 +128,10 @@ class Tree extends React.Component {
 
     if (!enterGap) {
       this.currDragOverKey = treeNode.props.eventKey
-      this.dragEnterTimeout = setTimeout(() => {
+      this.startDragEnterTimeout(() => {
         updateState()
         this.setState(state)
-      }, this.props.dragExpandDelay || DRAG_EXPAND_DELAY)
+      })
     }
     else {
       this.currDragOverKey = null
@@ -146,7 +153,7 @@ class Tree extends React.Component {
     if (this.isOverGap(e, treeNode) ||
       this.currDragOverKey !== treeNode.props.eventKey
     ) {
-      clearTimeout(this.dragEnterTimeout)
+      this.stopDragEnterTimeout(treeNode.props.eventKey)
       this.onDragEnter(e, treeNode)
     }
 
@@ -154,7 +161,10 @@ class Tree extends React.Component {
 
   }
 
+
   onDragLeave(e, treeNode) {
+
+    this.stopDragEnterTimeout(treeNode.props.eventKey)
     this.props.onDragLeave({ event: e, node: treeNode })
   }
 
@@ -497,6 +507,20 @@ class Tree extends React.Component {
       }
     })
     return dragNodesKeys
+  }
+
+  startDragEnterTimeout(cb) {
+    this.stopDragEnterTimeout()
+    this.dragEnterTimeout = setTimeout(
+      cb,
+      this.props.dragExpandDelay || DRAG_EXPAND_DELAY
+    )
+  }
+
+  stopDragEnterTimeout() {
+    if (this.dragEnterTimeout) {
+      clearTimeout(this.dragEnterTimeout)
+    }
   }
 
   traverseToKey(key, fn) {

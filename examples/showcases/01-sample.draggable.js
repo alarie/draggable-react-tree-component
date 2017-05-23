@@ -14,10 +14,12 @@ class Demo extends Component {
       'onDragStart',
       'onDragEnter',
       'onDrop',
-      'onExpand'
+      'onExpand',
+      'handleDragExpandDelayChanged'
     ].forEach((name) => (this[name] = this[name].bind(this)))
 
     this.state = {
+      dragExpandDelay: 2,
       gData,
       autoExpandParent: true,
       expandedKeys: ['0-0-key', '0-0-0-key', '0-0-0-0-key'],
@@ -97,6 +99,12 @@ class Demo extends Component {
     })
   }
 
+  handleDragExpandDelayChanged({ target: { value } }) {
+    this.setState({
+      dragExpandDelay: value
+    })
+  }
+
   render() {
     const loop = data => (
       data.map((item) =>
@@ -115,10 +123,23 @@ class Demo extends Component {
     return (<div className="draggable-demo">
       <h2>Draggable </h2>
       <p>drag a node into another node</p>
+      <label htmlFor="drag-delay-slider">
+        <span>DragExpandDelay: <strong>{this.state.dragExpandDelay}s</strong></span>
+        <input
+          id="drag-delay-slider"
+          onChange={this.handleDragExpandDelayChanged}
+          type="range"
+          min={0}
+          max={10}
+          value={this.state.dragExpandDelay}
+        />
+      </label>
       <div className="draggable-container">
         <Tree
           expandedKeys={this.state.expandedKeys}
-          onExpand={this.onExpand} autoExpandParent={this.state.autoExpandParent}
+          onExpand={this.onExpand}
+          dragExpandDelay={this.state.dragExpandDelay * 1000}
+          autoExpandParent={this.state.autoExpandParent}
           draggable
           onDragStart={this.onDragStart}
           onDragEnter={this.onDragEnter}
