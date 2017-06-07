@@ -227,6 +227,14 @@ class Tree extends React.Component {
       })
     }
 
+    // Adjust dropPosition
+    let index = res.dropPosition + (res.dropPositionOnNode > 0 ? 1 : 0)
+
+    if (res.isSameLevel && res.dragPosition < res.dropPosition) {
+      index -= 1
+    }
+    res.dropPosition = index
+
     // restore expanded keys
     if ('expandedKeys' in this.props) {
       res.rawExpandedKeys = [...this._rawExpandedKeys] || [...this.state.expandedKeys]
