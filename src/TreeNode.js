@@ -372,9 +372,9 @@ class TreeNode extends React.Component {
 
     const content = props.children || props.title
 
-    const icon = (props.loadData && this.state.dataLoading) ?
-      // <span className={classNames(iconEleCls)}></span>
-      <Spinner /> : null
+    const icon = (props.loadData && this.state.dataLoading)
+      ? <Spinner /> /* <span className={classNames(iconEleCls)}></span>*/
+      : null
 
     const domProps = {}
 
