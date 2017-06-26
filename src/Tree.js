@@ -45,6 +45,12 @@ class Tree extends React.Component {
     const checkedKeys = this.getDefaultCheckedKeys(nextProps, true)
     const selectedKeys = this.getDefaultSelectedKeys(nextProps, true)
     const st = {}
+
+    if (nextProps.externalDragMode) {
+      this.dragNodesKeys = nextProps.externalDragMode.externalDragNodeKeys;
+      this.dragNode = nextProps.externalDragMode.externalDragNode;
+    }
+
     if (expandedKeys) {
       st.expandedKeys = expandedKeys
     }
@@ -87,6 +93,7 @@ class Tree extends React.Component {
     this.props.onDragStart({
       event: e,
       node: treeNode,
+      nodeKeys: this.dragNodesKeys
     })
 
     this._dropTrigger = false
@@ -166,6 +173,9 @@ class Tree extends React.Component {
 
     this.stopDragEnterTimeout(treeNode.props.eventKey)
     this.props.onDragLeave({ event: e, node: treeNode })
+    this.setState({
+      dragOverNodeKey: ''
+    })
   }
 
   onDragEnd(e, treeNode) {
