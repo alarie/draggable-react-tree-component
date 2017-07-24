@@ -247,7 +247,12 @@ class Tree extends React.Component {
 
     // restore expanded keys
     if ('expandedKeys' in this.props) {
-      res.rawExpandedKeys = [...this._rawExpandedKeys] || [...this.state.expandedKeys]
+      if (this._rawExpandedKeys) {
+        res.rawExpandedKeys = [...this._rawExpandedKeys]
+      }
+      else {
+        res.rawExpandedKeys = [...this.state.expandedKeys]
+      }
     }
 
     this.props.onDrop(res)
