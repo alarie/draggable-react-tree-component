@@ -47,8 +47,8 @@ class Tree extends React.Component {
     const st = {}
 
     if (nextProps.externalDragMode) {
-      this.dragNodesKeys = nextProps.externalDragMode.externalDragNodeKeys;
-      this.dragNode = nextProps.externalDragMode.externalDragNode;
+      this.dragNodesKeys = nextProps.externalDragMode.externalDragNodeKeys
+      this.dragNode = nextProps.externalDragMode.externalDragNode
     }
 
     if (expandedKeys) {
@@ -586,7 +586,7 @@ class Tree extends React.Component {
   updateExpandedKeys(treeNode, val) {
 
     const key = treeNode.props.eventKey
-    const expandedKeys = this.state.expandedKeys
+    let expandedKeys = this.state.expandedKeys
     const expandedIndex = expandedKeys.indexOf(key)
     let exKeys
 
@@ -599,7 +599,9 @@ class Tree extends React.Component {
 
     // expand
     if (val.expand && expandedKeys.indexOf(key) === -1) {
-      return expandedKeys.concat([key])
+      expandedKeys = expandedKeys.concat([key])
+      this.props.onExpand(expandedKeys, { node: treeNode })
+      return expandedKeys
     }
 
     return null
@@ -792,6 +794,7 @@ Tree.propTypes = {
   openAnimation: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   dragExpandDelay: PropTypes.number,
   dropGapSize: PropTypes.number,
+  externalDragMode: PropTypes.object,
 }
 
 Tree.defaultProps = {
