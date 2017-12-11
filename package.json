@@ -1,6 +1,6 @@
 {
   "name": "draggable-react-tree-component",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "A (trying to be) lightweight tree component for react.",
   "keywords": [
     "draggable",
@@ -68,8 +68,8 @@
     "pre-commit": "^1.1.3",
     "raw-loader": "^0.5.1",
     "rc-animate": "2.x",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",

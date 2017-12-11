@@ -1,5 +1,7 @@
 /* eslint no-underscore-dangle: "off" */
-import React, { PropTypes } from 'react'
+import PropTypes from 'prop-types';
+
+import React from 'react';
 import classNames from 'classnames'
 import {
   loopAllChildren,
@@ -586,7 +588,7 @@ class Tree extends React.Component {
   updateExpandedKeys(treeNode, val) {
 
     const key = treeNode.props.eventKey
-    let expandedKeys = this.state.expandedKeys
+    const expandedKeys = this.state.expandedKeys
     const expandedIndex = expandedKeys.indexOf(key)
     let exKeys
 
@@ -599,9 +601,7 @@ class Tree extends React.Component {
 
     // expand
     if (val.expand && expandedKeys.indexOf(key) === -1) {
-      expandedKeys = expandedKeys.concat([key])
-      this.props.onExpand(expandedKeys, { node: treeNode })
-      return expandedKeys
+      return expandedKeys.concat([key])
     }
 
     return null
