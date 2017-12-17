@@ -1,5 +1,7 @@
 /* eslint no-underscore-dangle: "off" */
-import React, { PropTypes } from 'react'
+import PropTypes from 'prop-types';
+
+import React from 'react';
 import classNames from 'classnames'
 import {
   loopAllChildren,
@@ -47,8 +49,8 @@ class Tree extends React.Component {
     const st = {}
 
     if (nextProps.externalDragMode) {
-      this.dragNodesKeys = nextProps.externalDragMode.externalDragNodeKeys;
-      this.dragNode = nextProps.externalDragMode.externalDragNode;
+      this.dragNodesKeys = nextProps.externalDragMode.externalDragNodeKeys
+      this.dragNode = nextProps.externalDragMode.externalDragNode
     }
 
     if (expandedKeys) {
@@ -247,7 +249,12 @@ class Tree extends React.Component {
 
     // restore expanded keys
     if ('expandedKeys' in this.props) {
-      res.rawExpandedKeys = [...this._rawExpandedKeys] || [...this.state.expandedKeys]
+      if (this._rawExpandedKeys) {
+        res.rawExpandedKeys = [...this._rawExpandedKeys]
+      }
+      else {
+        res.rawExpandedKeys = [...this.state.expandedKeys]
+      }
     }
 
     this.props.onDrop(res)
@@ -787,6 +794,7 @@ Tree.propTypes = {
   openAnimation: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   dragExpandDelay: PropTypes.number,
   dropGapSize: PropTypes.number,
+  externalDragMode: PropTypes.object,
 }
 
 Tree.defaultProps = {
